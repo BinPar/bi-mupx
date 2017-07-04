@@ -1,5 +1,5 @@
 ## Extended mupx
-This package is the https://github.com/kadirahq/flow-router#mupx package with a lot of modifications for our own use. Use under your own risk.
+This package is the https://github.com/arunoda/meteor-up-legacy#mupx package with some modifications for our own use. Use under your own risk.
 
 #### Production Quality Meteor Deployments
 

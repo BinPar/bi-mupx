@@ -1,5 +1,5 @@
 {
-  "name": "mupx",
+  "name": "bi-mupx",
   "version": "2.1.4",
   "description": "Production Quality Meteor Deployments",
   "dependencies": {
