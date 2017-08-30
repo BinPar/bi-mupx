@@ -10,6 +10,7 @@ LINK_MAIL=<%= noMail ? "0" : "1" %>
 MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
 DOCKERIMAGE=<%= dockerimage %>
+AFTER_RUN_COMMAND=<%= afterRunCommand %>
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
@@ -75,4 +76,7 @@ else
       --name=$APPNAME \
       $DOCKERIMAGE
   fi
+fi
+if [ ! -z "$AFTER_RUN_COMMAND" ]; then
+  docker exec -it $APPNAME $AFTER_RUN_COMMAND
 fi
