@@ -13,7 +13,7 @@ set -e
 sudo docker run \
   -d \
   --restart=always \
-  --publish=127.0.0.1:27017:27017 \
+  --publish=0.0.0.0:27017:27017 \
   --volume=/var/lib/mongodb:/data/db \
   --volume=/opt/mongodb/mongodb.conf:/mongodb.conf \
   --name=mongodb \

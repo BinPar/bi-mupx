@@ -30,7 +30,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --volume=/opt/backups:/backups \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
-      --link=mail:$MAIL_NAME \
+      --link=$MAIL_NAME:mail \
       --hostname="$HOSTNAME-$APPNAME" \
       --env=MONGO_URL=mongodb://mongodb:27017/$APPNAME \
       --name=$APPNAME \
@@ -59,7 +59,7 @@ else
       --volume=/opt/backups:/backups \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
-      --link=mail:$MAIL_NAME \
+      --link=$MAIL_NAME:mail \
       --hostname="$HOSTNAME-$APPNAME" \
       --name=$APPNAME \
       $DOCKERIMAGE
@@ -78,5 +78,5 @@ else
   fi
 fi
 if [ ! -z "$AFTER_RUN_COMMAND" ]; then
-  docker exec -it $APPNAME $AFTER_RUN_COMMAND
+  docker exec -it $APPNAME "$AFTER_RUN_COMMAND"
 fi

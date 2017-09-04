@@ -1,6 +1,6 @@
 {
   "name": "@binpar/mupx",
-  "version": "2.1.11",
+  "version": "2.2.0",
   "description": "Production Quality Meteor Deployments",
   "dependencies": {
     "async": "^0.9.0",
