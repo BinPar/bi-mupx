@@ -38,7 +38,7 @@ El `mup.json` contiene la configuración necesaria para el deploy y el `settings
 
 ### Deploy Meteor antiguos servidores (sin contenedores)
 Para máquinas antiguas que no usan contenedores (i.e: Ada) el `mup.json` será algo parecido a esto:
-```json
+```js
 {
   "servers": [
     {
@@ -67,7 +67,7 @@ Para máquinas antiguas que no usan contenedores (i.e: Ada) el `mup.json` será 
 ### Deploy Meteor nuevos servidores (con contenedores)
 **¡ATENCIÓN! MUY IMPORTANTE:** 
 Para el setup del primer docker de un contenedor que aún no existe debemos de tener en cuenta una cosa muy importante: no tenemos ni puerto ni password de ese contenedor porque no existe. Por lo que nuestro `mup.json`, en el caso de servidores con contenedores tendrá configuraciones adicionales. Las más importantes son estas:
-```json
+```js
 {
   "servers": [
     {
@@ -91,7 +91,7 @@ Todas las configuraciones que estén destinadas a un servidor con contenedores d
 
 ## Deploy NextJS and new node APIs
 Por último, la configuración de servidores NextJS es exactamente igual a los dos casos anteriores solo que especificaremos una nodeVersion superior a 6.11.0 y añadiremos la configuración `nextjs: true` quedando de la siguiente forma:
-```json
+```js
 {
   "servers": [
     {
