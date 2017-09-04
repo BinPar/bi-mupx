@@ -1,6 +1,149 @@
 ## Extended mupx
 This package is the https://github.com/arunoda/meteor-up-legacy#mupx package with some modifications for our own use. Use under your own risk.
 
+# Cómo hacer un deploy correctamente
+Como convenio en BinPar hemos adoptado que los archivos necesarios para realizar los deploys van en directorios nombrados ".deploy". En el caso de requerir varios deploys a instancias distintas los nombraremos ".deploy-<identificador>" (i.e.: ".deploy-beta", ".deploy-prod" ).
+
+Lo primero que debéis hacer es aseguraros de tener la última versión de @binpar/mupx
+```
+sudo npm install -g @binpar/mupx
+```
+
+## Deploy meteor
+Dentro de los directorios de deploy tendremos dos archivos el `mup.json` y el `settings.json`.
+
+El `mup.json` contiene la configuración necesaria para el deploy y el `settings.json` son las settings con las que se ejecutará meteor en producción y las que posiblemente varíen entre un directorio de deploy y otro.
+
+## mup.json configuración básica
+ - server: Array de objetos. Información sobre el servidor
+   - host: String. IP o nombre de dominio del servidor
+   - username: String. Usuario ssh para login
+   - password: String. Password para el usuario
+   - pem: String. Ruta a una key para login ssh (No están admitidas keys con contraseña)
+   - sshOptions: Objeto. Permite especificar opciones para la conexión ssh como el puerto
+     - port: Number. Especifica el puerto ssh por el que se conectará al servidor.
+   - env: Objeto. Recoge todas las variables de entorno que se aplicarán al server
+ - setupMongo: Boolean. Indica cuando tiene que crear o no el docker con mongodb. Si es true se ignora la MONGO_URL de env.
+ - nodeVersion: String. Indica la versión de node que se instalará en el servidor.
+ - useMeteor4: Boolean. Sólo se pone a false si la versión de Meteor es anterior a 1.4
+ - publishNetwork: String. IP local en la que se publica la app
+ - dockerimage: String. Permite especificar una imagen de docker personalizada
+ - appName: String. Nombre de la aplicación, también será el nombre del docker y el nombre de la base de datos de Mongo si hemos especificado "setupMongo" a true
+ - app: Path relativo o absoluto hacia el directorio root de la app
+ - env: Objeto. Variables de entorno aplicadas a la app
+   - PORT: puerto al que se debe enrutar
+   - ROOT_URL: URL en la que escuchará
+   - MONGO_URL: URL de mongodb (no es tenido en cuenta si setupMongo es true)
+ - deployCheckWaitTime: Tiempo máximo de espera para que la verificación falle
+
+### Deploy Meteor antiguos servidores (sin contenedores)
+Para máquinas antiguas que no usan contenedores (i.e: Ada) el `mup.json` será algo parecido a esto:
+```json
+{
+  "servers": [
+    {
+      "host": "",
+      "username": "root",
+      "pem": "~/.ssh/id_rsa",
+      "env":{
+      }
+    }
+  ],
+  "setupMongo": true,
+  "setupNode": true,
+  "nodeVersion": "4.8.3",
+  "useMeteor4": true,
+  "appName": "NombreApp",
+  "app": "..",
+  "env": {
+    "PORT": "3000",
+    "ROOT_URL": "https://example.binpar.com"
+  },
+  "deployCheckWaitTime": 120,
+  "enableUploadProgressBar": true
+}
+```
+
+### Deploy Meteor nuevos servidores (con contenedores)
+**¡ATENCIÓN! MUY IMPORTANTE:** 
+Para el setup del primer docker de un contenedor que aún no existe debemos de tener en cuenta una cosa muy importante: no tenemos ni puerto ni password de ese contenedor porque no existe. Por lo que nuestro `mup.json`, en el caso de servidores con contenedores tendrá configuraciones adicionales. Las más importantes son estas:
+```json
+{
+  "servers": [
+    {
+      "host": "",
+      "username": "root",
+      //{{PASSWORD}}
+      //{{SSH_OPTIONS}}
+      "env":{
+      }
+    }
+  ],
+  ...
+  "containersConfig": true,
+  "containerName": "NombreContenedor",
+  ...
+}
+```
+Podemos observar algo extraño: `//{{PASSWORD}}` y `//{{SSH_OPTIONS}}`. Esto le permite a mupx sustituir esas líneas por la configuración del contenedor una vez creado después de ejecutar el `mupx setup`.
+
+Todas las configuraciones que estén destinadas a un servidor con contenedores deben tener `containersConfig` a true y un `containerName` que al hacer `mupx setup` se creará si no existe.
+
+## Deploy NextJS and new node APIs
+Por último, la configuración de servidores NextJS es exactamente igual a los dos casos anteriores solo que especificaremos una nodeVersion superior a 6.11.0 y añadiremos la configuración `nextjs: true` quedando de la siguiente forma:
+```json
+{
+  "servers": [
+    {
+      "host": "host",
+      "username": "root",
+      //{{PASSWORD}}
+      //{{SSH_OPTIONS}}
+      "env":{
+      }
+    }
+  ],
+  "setupMongo": true,
+  "setupNode": true,
+  "nodeVersion": "8.4.0",
+  "nextjs": true,
+  "appName": "NombreApp",
+  "publishNetwork":"0.0.0.0",
+  "containersConfig": true,
+  "containerName": "ContainerName",
+  "app": "..",
+  "dirExclusions": ["design"],
+  "env": {
+    "PORT": "3000",
+    "ROOT_URL": "https://midgard.binpar.com"
+  },
+  "deployCheckWaitTime": 120,
+  "enableUploadProgressBar": true
+}
+
+```
+Como podéis ver es parecido al deploy de Meteor en servidores con contenedores con la diferencia de que en vez de useMeteor4 tenemos nextjs: true.
+
+También tenemos una configuración adicional en deploys de NextJS y nuevos proyectos node que es `dirExclusions`. Es un array de Strings que nos permite especificar **directorios de primer nivel que serán excluidos**. Siempre estarán excluidos por defecto los siguientes directorios además de **todos** los que empiezan por . (es decir, ocultos):
+```
+['node_modules', '__test__', 'coverage']
+```
+**¡NOTA!**
+Para el correcto funcionamiento de este deploy hay unos pre-requisitos:
+1. Los babel runtimes, presets y plugins necesarios para la transpilación del proyecto deben estar en `dependencies` y NO en `devDependencies`.
+2. Es obligatorio que exista un npm script llamado `build` que realice la transpilación del proyecto.
+3. Es obligatorio que el npm script `start` inicie el proyecto con la variable de entorno NODE_ENV=production y desde la ruta a la versión transpilada.
+
+**¡Importante!** el parámetro `nextjs` prevalece sobre `useMeteor4`
+
+
+---
+
+
+
+
+# OLD README
+
 #### Production Quality Meteor Deployments
 
 Meteor Up is a command line tool that allows you to deploy any [Meteor](http://meteor.com) app to your own server. It currently supports Ubuntu. There are plans to support other linux distros soon.
