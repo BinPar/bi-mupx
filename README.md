@@ -115,7 +115,7 @@ Por último, la configuración de servidores NextJS es exactamente igual a los d
   "dirExclusions": ["design"],
   "env": {
     "PORT": "3000",
-    "ROOT_URL": "https://midgard.binpar.com"
+    "ROOT_URL": "https://example.binpar.com"
   },
   "deployCheckWaitTime": 120,
   "enableUploadProgressBar": true
