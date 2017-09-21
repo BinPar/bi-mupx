@@ -9,6 +9,9 @@ Lo primero que debéis hacer es aseguraros de tener la última versión de @binp
 sudo npm install -g @binpar/mupx
 ```
 
+## Antes de realizar ningn setup
+Asegurarse de que el dominio que vamos a usar está apuntando al servidor en el que vamos a hacer el deploy.
+
 ## Deploy meteor
 Dentro de los directorios de deploy tendremos dos archivos el `mup.json` y el `settings.json`.
 
