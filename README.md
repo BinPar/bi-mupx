@@ -9,6 +9,9 @@ Lo primero que debéis hacer es aseguraros de tener la última versión de @binp
 sudo npm install -g @binpar/mupx
 ```
 
+## Antes de realizar ningún setup
+Asegurarse de que el dominio que vamos a usar está apuntando al servidor en el que vamos a hacer el deploy.
+
 ## Deploy meteor
 Dentro de los directorios de deploy tendremos dos archivos el `mup.json` y el `settings.json`.
 
@@ -115,7 +118,7 @@ Por último, la configuración de servidores NextJS es exactamente igual a los d
   "dirExclusions": ["design"],
   "env": {
     "PORT": "3000",
-    "ROOT_URL": "https://midgard.binpar.com"
+    "ROOT_URL": "https://example.binpar.com"
   },
   "deployCheckWaitTime": 120,
   "enableUploadProgressBar": true
