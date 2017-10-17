@@ -69,6 +69,24 @@ set -e
 
 APP_DIR=/opt/<%=appName %>
 
+if [[ -d /opt/nodejs ]]; then
+   ln -sf /opt/nodejs/bin/node /usr/bin/node
+   ln -sf /opt/nodejs/bin/npm /usr/bin/npm
+else
+   cd /tmp
+   LINK_NODE4=http://nodejs.org/dist/latest-v4.x/
+   DOWNLOAD_NODE4=$(curl -s $LINK_NODE4 | grep -o '<a .*href=.*>' | sed -e 's/<a /\<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep 'linux' | grep "x64" | grep ".tar.gz")
+   LINK_NODE4=$LINK_NODE4$DOWNLOAD_NODE4
+   curl -O -L $LINK_NODE4
+   tar xvzf $DOWNLOAD_NODE4
+   DIR_NODE4=$(echo $DOWNLOAD_NODE4 | sed -e 's/.tar.gz//')
+   rm -rf /opt/nodejs
+   mv $DIR_NODE4 /opt/nodejs
+   ln -sf /opt/nodejs/bin/node /usr/bin/node
+   ln -sf /opt/nodejs/bin/npm /usr/bin/npm
+   rm -rf $DOWNLOAD_NODE4
+fi
+
 # save the last known version
 cd $APP_DIR
 
