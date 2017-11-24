@@ -13,8 +13,7 @@ DOCKERIMAGE=<%= dockerimage %>
 AFTER_RUN_COMMAND=<%= afterRunCommand %>
 VOLUMES=<%= volumes %>
 
-mkdir heyyou
-echo ============== $VOLUMES > heyyou/testeandoLogs
+echo ============== $VOLUMES > /tmp/testeandoLogs
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
