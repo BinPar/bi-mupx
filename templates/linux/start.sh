@@ -28,6 +28,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
   if [ "$LINK_MAIL" == "1" ]; then
     docker run \
       -d \
+      -v $VOLUMES \
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
@@ -42,6 +43,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
   else
     docker run \
       -d \
+      -v $VOLUMES \
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
@@ -57,6 +59,7 @@ else
   if [ "$LINK_MAIL" == "1" ]; then
     docker run \
       -d \
+      -v $VOLUMES \
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
@@ -70,6 +73,7 @@ else
   else
     docker run \
       -d \
+      -v $VOLUMES \
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
