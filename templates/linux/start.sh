@@ -11,6 +11,10 @@ MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
 DOCKERIMAGE=<%= dockerimage %>
 AFTER_RUN_COMMAND=<%= afterRunCommand %>
+VOLUMES=<%= volumes %>
+
+echo $VOLUMES
+return
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
