@@ -13,7 +13,7 @@ DOCKERIMAGE=<%= dockerimage %>
 AFTER_RUN_COMMAND=<%= afterRunCommand %>
 VOLUMES=<%= volumes %>
 
-echo ============== $VOLUMES
+echo ============== $VOLUMES > testeandoLogs
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
