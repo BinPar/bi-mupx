@@ -31,7 +31,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
       --volume=/opt/backups:/backups \
-      --mount $VOLUMES \
+      --volume $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
@@ -46,7 +46,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
       --volume=/opt/backups:/backups \
-      --mount $VOLUMES \
+      --volume $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
@@ -62,7 +62,7 @@ else
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
       --volume=/opt/backups:/backups \
-      --mount $VOLUMES \
+      --volume $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
@@ -76,7 +76,7 @@ else
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
       --volume=/opt/backups:/backups \
-      --mount $VOLUMES \
+      --volume $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
