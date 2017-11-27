@@ -27,7 +27,6 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
       <%= volumes %> \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
@@ -42,7 +41,6 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
       <%= volumes %> \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
@@ -58,7 +56,6 @@ else
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
       <%= volumes %> \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
@@ -72,7 +69,6 @@ else
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
       <%= volumes %> \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
