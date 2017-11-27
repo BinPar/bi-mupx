@@ -11,6 +11,7 @@ MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
 DOCKERIMAGE=<%= dockerimage %>
 AFTER_RUN_COMMAND=<%= afterRunCommand %>
+VOLUMES="<%= volumes %>"
 
 # Remove previous version of the app, if exists
 docker rm -f $APPNAME
@@ -27,7 +28,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
+      $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
@@ -41,7 +42,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
+      $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
@@ -56,7 +57,7 @@ else
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
+      $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
@@ -69,7 +70,7 @@ else
       --restart=always \
       --publish=$PUBLISH_NETWORK:$PORT:80 \
       --volume=$BUNDLE_PATH:/bundle \
-      --volume=/opt/backups:/backups \
+      $VOLUMES \
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
