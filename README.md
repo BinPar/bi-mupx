@@ -1,6 +1,10 @@
 ## Extended mupx
 This package is the https://github.com/arunoda/meteor-up-legacy#mupx package with some modifications for our own use. Use under your own risk.
 
+# Errores conocidos y posibles soluciones
+https://github.com/BinPar/bi-mupx/blob/master/docs/troubleshoot.md
+
+
 # Cómo hacer un deploy correctamente
 Como convenio en BinPar hemos adoptado que los archivos necesarios para realizar los deploys van en directorios nombrados ".deploy". En el caso de requerir varios deploys a instancias distintas los nombraremos ".deploy-<identificador>" (i.e.: ".deploy-beta", ".deploy-prod" ).
 
