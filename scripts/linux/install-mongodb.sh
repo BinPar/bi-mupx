@@ -17,4 +17,4 @@ sudo docker run \
   --volume=/var/lib/mongodb:/data/db \
   --volume=/opt/mongodb/mongodb.conf:/mongodb.conf \
   --name=mongodb \
-  mongo mongod -f /mongodb.conf
+  mongo:3.4 mongod -f /mongodb.conf
