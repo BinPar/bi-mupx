@@ -59,7 +59,6 @@ else
       --volume=$BUNDLE_PATH:/bundle \
       $VOLUMES \
       --env-file=$ENV_FILE \
-      --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
       --hostname="$HOSTNAME-$APPNAME" \
       --name=$APPNAME \
@@ -72,7 +71,6 @@ else
       --volume=$BUNDLE_PATH:/bundle \
       $VOLUMES \
       --env-file=$ENV_FILE \
-      --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
       --name=$APPNAME \
       $DOCKERIMAGE
