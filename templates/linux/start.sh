@@ -6,6 +6,7 @@ BUNDLE_PATH=$APP_PATH/current
 ENV_FILE=$APP_PATH/config/env.list
 PORT=<%= port %>
 USE_LOCAL_MONGO=<%= useLocalMongo? "1" : "0" %>
+MONGO_URL_CONFIG=<%= mongoUrlConfig %>
 LINK_MAIL=<%= noMail ? "0" : "1" %>
 MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
@@ -33,7 +34,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --link=mongodb:mongodb \
       --link=$MAIL_NAME:mail \
       --hostname="$HOSTNAME-$APPNAME" \
-      --env=MONGO_URL=mongodb://mongodb:27017/$APPNAME \
+      --env=MONGO_URL=$MONGO_URL_CONFIG \
       --name=$APPNAME \
       $DOCKERIMAGE
   else
@@ -46,7 +47,7 @@ if [ "$USE_LOCAL_MONGO" == "1" ]; then
       --env-file=$ENV_FILE \
       --link=mongodb:mongodb \
       --hostname="$HOSTNAME-$APPNAME" \
-      --env=MONGO_URL=mongodb://mongodb:27017/$APPNAME \
+      --env=MONGO_URL=$MONGO_URL_CONFIG \
       --name=$APPNAME \
       $DOCKERIMAGE
   fi
