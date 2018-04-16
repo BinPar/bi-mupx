@@ -116,13 +116,13 @@ cd $APP_DIR/current/bundle/programs/server/
 if [[ -e npm/node_modules/meteor/npm-bcrypt/node_modules/bcrypt ]] ; then
   echo "******** bcrypt fix ********"
   sudo rm -rf npm/node_modules/meteor/npm-bcrypt/node_modules/bcrypt
-  sudo npm install --update-binary --unsafe-perm -f bcrypt
+  sudo npm install --update-binary --unsafe-perm -f bcrypt@0.8.7
   sudo cp -r node_modules/bcrypt npm/node_modules/meteor/npm-bcrypt/node_modules/bcrypt
 fi
 if [[ -e npm/node_modules/bcrypt ]] ; then
   echo "******** bcrypt fix ********"
   sudo rm -rf npm/node_modules/bcrypt
-  sudo npm install --update-binary --unsafe-perm -f bcrypt
+  sudo npm install --update-binary --unsafe-perm -f bcrypt@0.8.7
   sudo cp -r node_modules/bcrypt npm/node_modules/
 fi
 
