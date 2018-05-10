@@ -36,7 +36,7 @@ fi
 sudo cp tmp/bundle.tar.gz current/
 cd current/
 sudo tar xzf bundle.tar.gz
-sudo npm install --production --unsafe-perm
+sudo npm install --no-optional
 echo "****** BUILD NEXT ******"
 sudo npm run build
 
