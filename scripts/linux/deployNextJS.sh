@@ -2,14 +2,25 @@
 set -e
 
 APP_DIR=/opt/<%=appName %>
+MUPX_NODE_VERSION=<%=mupxNodeVersion %>
 
-LINK_NODE8=http://nodejs.org/dist/latest-v8.x/
-NODE_VERSION=$(curl -s $LINK_NODE8 | grep -o '<a .*href=.*>' | sed -e 's/<a /\<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep 'linux' | grep "x64" | grep ".tar.gz" | sed -e 's/node-//g' -e 's/-linux-x64.tar.gz//g')
+if [ -n "$MUPX_NODE_VERSION" ]; then
+  NODE_VERSION=${MUPX_NODE_VERSION}
+else
+  LINK_NODE8=http://nodejs.org/dist/latest-v8.x/
+  NODE_VERSION=$(curl -s $LINK_NODE8 | grep -o '<a .*href=.*>' | sed -e 's/<a /\<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep 'linux' | grep "x64" | grep ".tar.gz" | sed -e 's/node-//g' -e 's/-linux-x64.tar.gz//g')
+fi
 if [ $NODE_VERSION != $(node -v) ]; then
   cd /tmp
-  LINK_NODE8=http://nodejs.org/dist/latest-v8.x/
-  DOWNLOAD_NODE8=$(curl -s $LINK_NODE8 | grep -o '<a .*href=.*>' | sed -e 's/<a /\<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep 'linux' | grep "x64" | grep ".tar.gz")
-  LINK_NODE8=$LINK_NODE8$DOWNLOAD_NODE8
+  if [ -n "$MUPX_NODE_VERSION" ]; then
+    NODE_DIST=node-v${NODE_VERSION}-linux-x64
+    LINK_NODE8=http://nodejs.org/dist/v${NODE_VERSION}/${NODE_DIST}.tar.gz
+    DOWNLOAD_NODE8=${NODE_DIST}.tar.gz
+  else
+    LINK_NODE8=http://nodejs.org/dist/latest-v8.x/
+    DOWNLOAD_NODE8=$(curl -s $LINK_NODE8 | grep -o '<a .*href=.*>' | sed -e 's/<a /\<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' | grep 'linux' | grep "x64" | grep ".tar.gz")
+    LINK_NODE8=$LINK_NODE8$DOWNLOAD_NODE8
+  fi
   sudo curl -O -L $LINK_NODE8
   sudo tar xvzf $DOWNLOAD_NODE8
   DIR_NODE8=$(echo $DOWNLOAD_NODE8 | sed -e 's/.tar.gz//')
