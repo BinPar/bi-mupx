@@ -5,7 +5,7 @@ APP_PATH=/opt/$APPNAME
 BUNDLE_PATH=$APP_PATH/current
 ENV_FILE=$APP_PATH/config/env.list
 PORT=<%= port %>
-USE_LOCAL_MONGO=<%= useLocalMongo? "1" : "0" %>
+USE_LOCAL_MONGO=<%= linkMongo? "1" : "0" %>
 MONGO_URL_CONFIG=<%= mongoUrlConfig %>
 LINK_MAIL=<%= noMail ? "0" : "1" %>
 MAIL_NAME=<%= mailName %>
@@ -23,60 +23,17 @@ docker pull $DOCKERIMAGE
 set -e
 
 if [ "$USE_LOCAL_MONGO" == "1" ]; then
-  if [ "$LINK_MAIL" == "1" ]; then
-    docker run \
-      -d \
-      --restart=always \
-      --publish=$PUBLISH_NETWORK:$PORT:80 \
-      --volume=$BUNDLE_PATH:/bundle \
-      $VOLUMES \
-      --env-file=$ENV_FILE \
-      --link=mongodb:mongodb \
-      --link=$MAIL_NAME:mail \
-      --hostname="$HOSTNAME-$APPNAME" \
-      --env=MONGO_URL=$MONGO_URL_CONFIG \
-      --name=$APPNAME \
-      $DOCKERIMAGE
-  else
-    docker run \
-      -d \
-      --restart=always \
-      --publish=$PUBLISH_NETWORK:$PORT:80 \
-      --volume=$BUNDLE_PATH:/bundle \
-      $VOLUMES \
-      --env-file=$ENV_FILE \
-      --link=mongodb:mongodb \
-      --hostname="$HOSTNAME-$APPNAME" \
-      --env=MONGO_URL=$MONGO_URL_CONFIG \
-      --name=$APPNAME \
-      $DOCKERIMAGE
-  fi
-else
-  if [ "$LINK_MAIL" == "1" ]; then
-    docker run \
-      -d \
-      --restart=always \
-      --publish=$PUBLISH_NETWORK:$PORT:80 \
-      --volume=$BUNDLE_PATH:/bundle \
-      $VOLUMES \
-      --env-file=$ENV_FILE \
-      --link=$MAIL_NAME:mail \
-      --hostname="$HOSTNAME-$APPNAME" \
-      --name=$APPNAME \
-      $DOCKERIMAGE
-  else
-    docker run \
-      -d \
-      --restart=always \
-      --publish=$PUBLISH_NETWORK:$PORT:80 \
-      --volume=$BUNDLE_PATH:/bundle \
-      $VOLUMES \
-      --env-file=$ENV_FILE \
-      --hostname="$HOSTNAME-$APPNAME" \
-      --name=$APPNAME \
-      $DOCKERIMAGE
-  fi
+  LINK_MONGO_DOCKER=--link=mongodb:mongodb
 fi
+if [ "$LINK_MAIL" == "1" ]; then
+  LINK_MAIL_DOCKER=--link=$MAIL_NAME:mail
+fi
+if [ -n $MONGO_URL_CONFIG ]; then
+  ENV_MONGO_URL=--env=MONGO_URL=$MONGO_URL_CONFIG
+fi
+
+docker run -d --restart=always --publish=$PUBLISH_NETWORK:$PORT:80 --volume=$BUNDLE_PATH:/bundle $VOLUMES --env-file=$ENV_FILE $LINK_MONGO_DOCKER $LINK_MAIL_DOCKER --hostname="$HOSTNAME-$APPNAME" $ENV_MONGO_URL --name=$APPNAME $DOCKERIMAGE
+
 if [ ! -z "$AFTER_RUN_COMMAND" ]; then
   docker exec -it $APPNAME "$AFTER_RUN_COMMAND"
 fi
