@@ -9,9 +9,9 @@ MONGO_DB_VERSION=<%=mongoVersion %>
 MONGO_FORCE_UPDATE=<%=mongoForceUpdate? "1" : "0" %>
 IS_MONGO_RUNNING=$(sudo docker ps | grep mongodb)
 if [ -n "$IS_MONGO_RUNNING" -a $MONGO_FORCE_UPDATE != 1 ]; then
-  echo mongo running!
+  echo mongo is already running!
 else
-  echo mongo not running!
+  echo mongo not running or force update!
   sudo docker pull mongo:$MONGO_DB_VERSION
   set +e
   sudo docker rm -f mongodb
