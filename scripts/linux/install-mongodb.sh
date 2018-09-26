@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set +e
 # we use this data directory for the backward compatibility
 # older mup uses mongodb from apt-get and they used this data directory
 sudo mkdir -p /var/lib/mongodb
@@ -13,8 +13,8 @@ if [ -n "$IS_MONGO_RUNNING" -a $MONGO_FORCE_UPDATE != 1 ]; then
 else
   echo mongo not running or force update!
   sudo docker pull mongo:$MONGO_DB_VERSION
-  set +e
-  sudo docker rm -f mongodb
+  sudo docker stop mongodb
+  sudo docker rm mongodb
   set -e
 
   sudo docker run \
