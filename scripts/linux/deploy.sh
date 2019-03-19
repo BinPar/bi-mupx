@@ -125,6 +125,12 @@ if [[ -e npm/node_modules/bcrypt ]] ; then
   sudo npm install --update-binary --unsafe-perm -f bcrypt@0.8.7
   sudo cp -r node_modules/bcrypt npm/node_modules/
 fi
+if [[ -e npm/node_modules/mailgun-js ]] ; then
+  echo "******** mailgun-js fix ********"
+  sudo rm -rf npm/node_modules/mailgun-js/node_modules/get-uri
+  sudo npm install --update-binary --unsafe-perm -f get-uri@2.0.2
+  sudo cp -a node_modules/get-uri npm/node_modules/mailgun-js/node_modules/
+fi
 
 cd $APP_DIR
 # start app
