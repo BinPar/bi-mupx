@@ -129,7 +129,16 @@ if [[ -e npm/node_modules/mailgun-js ]] ; then
   echo "******** mailgun-js fix ********"
   sudo rm -rf npm/node_modules/mailgun-js/node_modules/get-uri
   sudo npm install --update-binary --unsafe-perm -f get-uri@2.0.2
+  if [[ -e npm/node_modules/get-uri ]] ; then
+    sudo rm -rf npm/node_modules/get-uri
+    sudo cp -a node_modules/get-uri npm/node_modules/
+  fi
   sudo cp -a node_modules/get-uri npm/node_modules/mailgun-js/node_modules/
+fi
+if [[ -e npm/node_modules/gtoken ]] ; then
+  echo "******** gtoken fix ********"
+  sudo rm -rf npm/node_modules/gtoken
+  sudo npm install --update-binary --unsafe-perm -f gtoken@2.3.0
 fi
 
 cd $APP_DIR
