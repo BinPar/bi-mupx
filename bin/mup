@@ -12,20 +12,24 @@ var settingsFileName = cliOptions.settings || 'settings.json';
 require('colors');
 require('../lib/update_notifier.js');
 
-console.log('\nMeteor Up: Production Quality Meteor Deployments'.bold.blue);
-console.log('------------------------------------------------'.bold.blue);
+console.log('\nBinPar Deploy System: NodeJS / Meteor to production'.bold.blue);
+console.log('---------------------------------------------------'.bold.blue);
 
 if (configFileName !== 'mup.json' || settingsFileName !== 'settings.json') {
 	console.log('Using custom configuration/settings file'.bold.green);
 }
-console.log('Configuration file : ' + configFileName);
-console.log('Settings file      : ' + settingsFileName);
-console.log('');
-
 var action = cliOptions._[0];
+if (action !== 'version') {
+  console.log('Configuration file : ' + configFileName);
+  console.log('Settings file      : ' + settingsFileName);
+  console.log('');
+}
+
 if (action == 'init') {
 	//special setup for init
 	ActionsRegistry.init();
+} else if (action == 'version') {
+  ActionsRegistry.version();
 } else {
 	var cwd = path.resolve('.');
 	//read config and validate it
