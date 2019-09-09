@@ -138,4 +138,4 @@ fi
 
 cd $APP_DIR
 # start app
-sudo bash config/start.sh
+sudo bash config/start<%=nDeploy %>.sh
