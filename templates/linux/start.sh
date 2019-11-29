@@ -36,5 +36,5 @@ fi
 docker run -d --restart=always --publish=$PUBLISH_NETWORK:$PORT:80 --volume=$BUNDLE_PATH:/bundle $VOLUMES --env-file=$ENV_FILE $LINK_MONGO_DOCKER $LINK_MAIL_DOCKER --hostname="$HOSTNAME-$DOCKERNAME" $ENV_MONGO_URL --name=$DOCKERNAME $DOCKERIMAGE
 
 if [ ! -z "$AFTER_RUN_COMMAND" ]; then
-  docker exec -it $DOCKERNAME "$AFTER_RUN_COMMAND"
+  docker exec -it $DOCKERNAME $AFTER_RUN_COMMAND
 fi
