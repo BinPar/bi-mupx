@@ -12,7 +12,7 @@ MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
 DOCKERIMAGE=<%= dockerimage %>
 DOCKERNAME=<%= dockerName %>
-AFTER_RUN_COMMAND=<%= afterRunCommand %>
+AFTER_RUN_COMMAND="<%= afterRunCommand %>"
 VOLUMES="<%= volumes %>"
 
 # Remove previous version of the app, if exists
@@ -35,6 +35,6 @@ fi
 
 docker run -d --restart=always --publish=$PUBLISH_NETWORK:$PORT:80 --volume=$BUNDLE_PATH:/bundle $VOLUMES --env-file=$ENV_FILE $LINK_MONGO_DOCKER $LINK_MAIL_DOCKER --hostname="$HOSTNAME-$DOCKERNAME" $ENV_MONGO_URL --name=$DOCKERNAME $DOCKERIMAGE
 
-if [ ! -z "$AFTER_RUN_COMMAND" ]; then
+if [ -n "$AFTER_RUN_COMMAND" ]; then
   docker exec -it $DOCKERNAME $AFTER_RUN_COMMAND
 fi
