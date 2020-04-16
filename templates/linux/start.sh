@@ -11,6 +11,7 @@ LINK_MAIL=<%= noMail ? "0" : "1" %>
 MAIL_NAME=<%= mailName %>
 PUBLISH_NETWORK=<%= publishNetwork ? publishNetwork : "127.0.0.1" %>
 DOCKERIMAGE=<%= dockerimage %>
+ADDITIONAL_DOCKER_RUN_OPTIONS=<%= additionalDockerRunOptions %>
 DOCKERNAME=<%= dockerName %>
 AFTER_RUN_COMMAND="<%= afterRunCommand %>"
 VOLUMES="<%= volumes %>"
@@ -33,8 +34,8 @@ if [ -n $MONGO_URL_CONFIG ]; then
   ENV_MONGO_URL=--env=MONGO_URL=$MONGO_URL_CONFIG
 fi
 
-docker run -d --restart=always --publish=$PUBLISH_NETWORK:$PORT:80 --volume=$BUNDLE_PATH:/bundle $VOLUMES --env-file=$ENV_FILE $LINK_MONGO_DOCKER $LINK_MAIL_DOCKER --hostname="$HOSTNAME-$DOCKERNAME" $ENV_MONGO_URL --name=$DOCKERNAME $DOCKERIMAGE
+docker run -d --restart=always --publish=$PUBLISH_NETWORK:$PORT:80 --volume=$BUNDLE_PATH:/bundle $VOLUMES --env-file=$ENV_FILE $LINK_MONGO_DOCKER $LINK_MAIL_DOCKER --hostname="$HOSTNAME-$DOCKERNAME" $ENV_MONGO_URL --name=$DOCKERNAME $ADDITIONAL_DOCKER_RUN_OPTIONS $DOCKERIMAGE
 
 if [ -n "$AFTER_RUN_COMMAND" ]; then
-  docker exec -it $DOCKERNAME $AFTER_RUN_COMMAND
+  docker exec -it $DOCKERNAME -- $AFTER_RUN_COMMAND
 fi
